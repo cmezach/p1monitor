@@ -27,7 +27,7 @@ ser.stopbits=serial.STOPBITS_ONE
 ser.xonxoff=0
 ser.rtscts=0
 ser.timeout=20
-ser.port="/dev/ttyAMA0"
+ser.port="/dev/ttyUSB0"
 
 # stack is mijn list met de 26 regeltjes ingelezen uit de P1 poort
 regels = 26
