@@ -80,9 +80,6 @@ while True:
         # Huidige netspanning: 1-0:32.7.0
         elif stack[stack_teller][0:10] == "1-0:32.7.0":
             spanning = float(stack[stack_teller][11:14])
-        # Gasmeter: 0-1:24.2.1
-        elif stack[stack_teller][0:10] == "0-1:24.2.1":
-            gas = float(stack[stack_teller][26:35])
         else:
             pass
         stack_teller = stack_teller +1
@@ -100,8 +97,7 @@ while True:
                     "piekterug": piekterug,
                     "vermogenaf": vermogenaf,
                     "vermogenterug":vermogenterug,
-                    "spanning":spanning,
-                    "gas":gas
+                    "spanning":spanning
             }
         }
     ]
@@ -119,6 +115,5 @@ while True:
     del vermogenaf
     del vermogenterug
     del spanning
-    del gas
 
     time.sleep(interval)
