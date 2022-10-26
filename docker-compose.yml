@@ -12,7 +12,7 @@ services:
       - 3000:3000
       
   influxdb:
-      image: influxdb:1.8.10
+    image: influxdb:1.8.10
     restart: on-failure:5 
     volumes: 
       - influxdb-volume: /var/lib/influxdb
@@ -26,7 +26,7 @@ services:
       - INFLUXDB_USER_PASSWORD: user
       
   p1monitor:
-   image: collinmezach/p1monitor:latest
+    image: collinmezach/p1monitor:latest
     restart: on-failure:5 
     networks:
       - database
