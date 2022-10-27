@@ -8,8 +8,8 @@ services:
     networks:
       - frontend
       - database
-#    ports:
-#      - 3000:3000
+    ports:
+      - 3000:3000
       
   influxdb:
     image: influxdb:1.8.10
@@ -26,7 +26,7 @@ services:
       - INFLUXDB_USER_PASSWORD='user'
        
   p1monitor:
-    image: collinmezach/p1monitor:latest
+    image: collinit/p1monitor
     restart: on-failure:5 
     networks:
       - database
@@ -35,9 +35,7 @@ services:
 
 volumes:
   grafana-volume:
-    external: true
   influxdb-volume:
-    external: true
 
 networks:
   database:
