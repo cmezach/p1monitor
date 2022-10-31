@@ -2,7 +2,7 @@ version: "3.6"
 services:
   grafana:
     image: grafana/grafana-oss:latest
-    restart: on-failure:5 
+    restart: unless-stopped
     volumes: 
       - grafana-volume:/var/lib/grafana
     networks:
@@ -10,10 +10,10 @@ services:
       - database
     ports:
       - 3000:3000
-      
+   
   influxdb:
     image: influxdb:1.8.10
-    restart: on-failure:5 
+    restart: unless-stopped
     volumes: 
       - influxdb-volume:/var/lib/influxdb
     networks:
@@ -24,10 +24,18 @@ services:
       - INFLUXDB_ADMIN_PASSWORD='admin'
       - INFLUXDB_USER='user'
       - INFLUXDB_USER_PASSWORD='user'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
        
   p1monitor:
     image: collinit/p1monitor
-    restart: on-failure:5 
+    depends_on:
+      - influxdb 
+    restart: unless-stopped 
     networks:
       - database
     devices:

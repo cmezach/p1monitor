@@ -140,7 +140,7 @@ def main():
             if "!" in p1line.decode('ascii'):
                 if checkcrc(p1telegram):
                     # parse telegram contents, line by line
-                     emptyjson = '[{"measurement" : "p1-jeroen" , "fields" : {}}                                                                                                             ]'
+                     emptyjson = '[{"measurement" : "p1-stroom" , "fields" : {}}                                                                                                             ]'
                      data = json.loads(emptyjson)
                      for line in p1telegram.split(b'\r\n'):
                          r = parsetelegramline(line.decode('ascii'))
