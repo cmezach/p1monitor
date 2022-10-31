@@ -21,7 +21,6 @@ user = "admin"  # the user/password created for the pi, with write access
 password = "admin"
 dbname = "p1data" # the database we created earlier
 interval = 10 # Sample period in seconds
-count = 0
 
 # Create the InfluxDB client object
 client = InfluxDBClient(host, port, user, password, dbname)
@@ -126,36 +125,35 @@ def main():
     ser = serial.Serial(serialport, 115200, xonxoff=1)
     p1telegram = bytearray()
     while True:
-        if count % interval 
-        count++
-            try:
-                # read input from serial port
-                p1line = ser.readline()
-                if debug:
-                    print ("Reading: ", p1line.strip())
-                # P1 telegram starts with /
-                # We need to create a new empty telegram
-                if "/" in p1line.decode('ascii'):
-                    p1telegram = bytearray()
-                # add line to complete telegram
-                p1telegram.extend(p1line)
-                # P1 telegram ends with ! + CRC16 checksum
-                if "!" in p1line.decode('ascii'):
-                    if checkcrc(p1telegram):
-                        # parse telegram contents, line by line
-                        emptyjson = '[{"measurement" : "p1-stroom" , "fields" : {}}                                                                                                             ]'
-                        data = json.loads(emptyjson)
-                        for line in p1telegram.split(b'\r\n'):
-                            r = parsetelegramline(line.decode('ascii'))
-                            if r:
-                            data[0]['fields'][r[0]] = r[1]
-                        formatted_output = json.dumps(data)
-                        print (formatted_output)
-                        client.write_points(data)
-            except KeyboardInterrupt:
-                print("Stopping...")
-                ser.close()
-                break
+        try:
+            # read input from serial port
+            p1line = ser.readline()
+            if debug:
+                print ("Reading: ", p1line.strip())
+            # P1 telegram starts with /
+            # We need to create a new empty telegram
+            if "/" in p1line.decode('ascii'):
+                p1telegram = bytearray()
+            # add line to complete telegram
+            p1telegram.extend(p1line)
+            # P1 telegram ends with ! + CRC16 checksum
+            if "!" in p1line.decode('ascii'):
+                if checkcrc(p1telegram):
+                    # parse telegram contents, line by line
+                     emptyjson = '[{"measurement" : "p1-stroom" , "fields" : {}}                                                                                                             ]'
+                     data = json.loads(emptyjson)
+                     for line in p1telegram.split(b'\r\n'):
+                         r = parsetelegramline(line.decode('ascii'))
+                         if r:
+                           data[0]['fields'][r[0]] = r[1]
+                     formatted_output = json.dumps(data)
+                     print (formatted_output)
+                     client.write_points(data)
+                     time.sleep(10)
+        except KeyboardInterrupt:
+            print("Stopping...")
+            ser.close()
+            break
 #        except:
 #            if debug:
 #                print(traceback.format_exc())
