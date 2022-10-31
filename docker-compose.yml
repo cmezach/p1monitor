@@ -24,6 +24,7 @@ services:
       - INFLUXDB_ADMIN_PASSWORD='admin'
       - INFLUXDB_USER='user'
       - INFLUXDB_USER_PASSWORD='user'
+      - INFLUXDB_HTTP_AUTH_ENABLED='true'
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
       interval: 10s
